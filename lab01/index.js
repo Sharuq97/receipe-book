@@ -24,7 +24,7 @@ async function connect(uri, dbname) {
         useUnifiedTopology: true
     })
     let db = client.db(dbname);
-    return _db;
+    return db;
 }
 
 async function main() {
