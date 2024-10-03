@@ -31,33 +31,55 @@ async function main() {
     let db = await connect(mongoUri, dbname);
 
     // Routes
-    app.get("/", function (req, res) {
-        res.json({
-            message: "Hello World!",
-        });
+
+//STEP 10
+    const { ObjectId } = require('mongodb');
+
+app.get("/recipes/:id", async (req, res) => {
+    try {
+        const id = req.params.id;
+        
+        // First, fetch the recipe
+        const recipe = await db.collection("recipes").findOne(
+            { _id: new ObjectId(id) },
+            { projection: { _id: 0 } }
+        );
+        
+        if (!recipe) {
+            return res.status(404).json({ error: "Recipe not found" });
+        }
+        
+        
+        res.json(recipe);
+    } catch (error) {
+        console.error("Error fetching recipe:", error);
+        res.status(500).json({ error: "Internal server error" });
+    }
+});
+
+// STEP 09
+    app.get("/recipes", async (req, res) => {
+        try {
+            const recipes = await db.collection("recipes").find().project({
+                name: 1,
+                cuisine: 1,
+                tags: 1,
+                prepTime: 1,
+            }).toArray();
+            
+            res.json({ recipes });
+        } catch (error) {
+            console.error("Error fetching recipes:", error);
+            res.status(500).json({ error: "Internal server error" });
+        }
     });
 }
+
 
 main();
 
 
-//Lab 2
-app.get('/echo', (req,res)=>{
-    //Get all query parameters
-    const queryParams = req.query;
-
-    //Create a response object
-    const response = {
-        message: "Here are the query parameters you sent:",
-        firstName: queryParams.firstName,
-        lastName: queryParams.lastName
-    };
-
-    //send the response as JSON
-    res.json(response);
-
-})
-
+// START SERVER
 app.listen(3000, ()=>{
     console.log("Server started")
 })
