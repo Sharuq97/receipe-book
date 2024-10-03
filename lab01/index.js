@@ -1,7 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const { ObjectId } = require('mongodb');
-require('dotenv').config()
+require('dotenv').config() //env
 const MongoClient = require("mongodb").MongoClient;
 const mongoUri = process.env.MONGO_URI;
 
@@ -49,6 +49,7 @@ async function main() {
             res.status(500).json({ error: "Internal server error02" });
         }
     });*/
+
 
     app.get('/recipes', async (req, res) => {
         try {
