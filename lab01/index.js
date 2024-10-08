@@ -6,7 +6,6 @@ const MongoClient = require("mongodb").MongoClient;
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
-
 const dbname = "recipe_book";
 
 // ENABLE DOTENV
@@ -97,7 +96,6 @@ async function main() {
                 res.status(500).json({ error: "Internal server error02" });
             }
         });*/
-
 
     app.get('/recipes', verifyToken, async (req, res) => {
         try {
@@ -318,10 +316,6 @@ async function main() {
         res.status(500);
     }
 
-
-
-
-
     })
 
     app.post('/login', async function(req, res){
@@ -369,9 +363,7 @@ async function main() {
 
 }
 
-
 main();
-
 
 // START SERVER
 app.listen(3000, () => {
